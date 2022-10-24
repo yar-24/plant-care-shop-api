@@ -1,0 +1,137 @@
+const cloudinary = require("../middleware/cloudinaryMiddleware");
+const asyncHandler = require("express-async-handler");
+const Service = require("../models/modelServices");
+
+// @desc    Post Service
+// @route   POST /v2/services
+// @access  Private
+const servicePost = asyncHandler(async (req, res) => {
+  if (!req.files) {
+    const err = new Error("Gambar harus diupload!!");
+    err.errorStatus = 422;
+    throw err;
+  } else {
+    try {
+      const cloudUpload = await cloudinary.uploader.upload;
+      const image = await cloudUpload(req.files["image"][0].path);
+      const subImage = await cloudUpload(req.files["subImage"][0].path);
+
+      const subService = {
+        subTitle: req.body.subTitle,
+        subDesc: req.body.subDesc,
+        subIdImage: subImage.public_id,
+      };
+
+      const service = await Service.create({
+        title: req.body.title,
+        desc: req.body.desc,
+        idImage: image.public_id,
+        subService: subService,
+      });
+      res.status(201).json({ messsage: "Berhasil diinput", service: service });
+    } catch (error) {
+      res.status(400).send(error.message);
+      throw new Error("Invalid user data");
+    }
+  }
+});
+
+// @desc    Put Service
+// @route   PUT /v2/services/:id
+// @access  Private
+const serviceUpdate = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+
+  if (!req.files) {
+    const err = new Error("Gambar harus diupload!!");
+    err.errorStatus = 422;
+    throw err;
+  } else {
+    try {
+      let service = await Service.findById(req.params.id);
+
+      //DELETE FILE
+      const cloudDelete = await cloudinary.uploader.destroy;
+      cloudDelete(service.idImage);
+      cloudDelete(service.subIdImage);
+
+      //POST FILE
+      const cloudUpload = await cloudinary.uploader.upload;
+      const image = await cloudUpload(req.files["image"][0].path);
+      const subImage = await cloudUpload(req.files["subImage"][0].path);
+
+      const subService = {
+        subTitle: req.body.subTitle || service.subTitle,
+        subDesc: req.body.subDesc || service.subDesc,
+        subIdImage: subImage.public_id || service.subIdImage,
+      };
+
+      const data = {
+        title: req.body.title || service.title,
+        desc: req.body.desc || service.desc,
+        idImage: image.public_id || service.idImage,
+        subService: subService,
+      };
+
+      service = await Service.findByIdAndUpdate(id, data, { new: true });
+      res.json({ message: "Berhasil diupdate", data });
+    } catch (err) {
+      res.status(400).send(err.message);
+      throw new Error("Invalid user data");
+    }
+  }
+});
+
+// @desc    Delete Service
+// @route   DELETE /v2/services/:id
+// @access  Private
+const serviceDelete = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+  
+    try {
+      let service = await Service.findById(req.params.id);
+  
+      const cloudDelete = await cloudinary.uploader.destroy;
+      cloudDelete(service.idImage);
+      cloudDelete(service.subIdImage);
+      service = await Service.findByIdAndRemove(id);
+      res.json({ message: "Berhasil dihapus" });
+    } catch (error) {
+      res.status(400).send(err.message);
+      throw new Error("Invalid user data");
+    }
+  });
+
+// @desc    Get Service
+// @route   GET /v2/services/:id
+const serviceGet = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+  
+    let service = await Service.findById(id);
+  
+    if (service) {
+      res.status(200).json({
+        message: "Berhasil dipanggil",
+        service: service,
+      });
+    } else {
+      res.status(400).send(err.message);
+      throw new Error("Invalid credentials");
+    }
+  });
+  
+// @desc    Get all Services
+// @route   GET /v2/services
+const serviceGets = asyncHandler(async (req, res) => {
+    const services = await Service.find();
+    try {
+      res.status(200).json({
+        message: "Berhasil dipanggil",
+        services: services,
+      });
+    } catch (error) {
+      res.status(400).send(err.message);
+      throw new Error("Invalid credentials");
+    }
+  });
+module.exports = { servicePost, serviceUpdate, serviceDelete, serviceGet, serviceGets };

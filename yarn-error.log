@@ -1,0 +1,46 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add cors dotenv express-validatro jsonwebtoken mongoose nodemon express-async-handler
+
+PATH: 
+  C:\Oracle\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk-14.0.1\bin;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\OpenJDK\openjdk-8u312-b07\bin;C:\Users\YARE\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\YARE\AppData\Roaming\npm;C:\Program Files\Go\bin;C:\Users\YARE\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Go;C:\Program Files\nodejs;C:\Program Files\Git\bin;C:\Program Files\Android\Android Studio\bin;C:\Program Files\Java\jdk-14.0.1\bin;C:\Program Files\gradle-6.6\bin;C:\Program Files\dotnet\sdk\3.1.301;E:\Program Files\NetBeans-12.0\netbeans\bin;C:\Users\YARE\Documents\COBOL\bin;C:\Program Files\OpenJDK\openjdk-8u302-b08\bin;C:\Users\YARE\.dotnet\tools;C:\Users\YARE\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\bin;C:\Users\YARE\AppData\Roaming\npm\node_modules\expo-cli\bin;C:\Users\YARE\AppData\Local\Android\Sdk\emulator;C:\Users\YARE\AppData\Local\Android\Sdk\platform-tools;C:\Users\YARE\AppData\Roaming\npm;replace [Akhyar];C:\Users\YARE\go\bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.13.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/express-validatro: Not found
+      at Request.params.callback [as _callback] (C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
+      at Request.self.callback (C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
+      at Request.emit (node:events:390:28)
+      at Request.<anonymous> (C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
+      at Request.emit (node:events:390:28)
+      at IncomingMessage.<anonymous> (C:\Users\YARE\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
+      at Object.onceWrapper (node:events:509:28)
+      at IncomingMessage.emit (node:events:402:35)
+      at endReadableNT (node:internal/streams/readable:1343:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "api-plant-care-shop",
+    "version": "1.0.0",
+    "description": "capstone dicoding",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "C22-006",
+    "license": "ISC"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
