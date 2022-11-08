@@ -54,7 +54,7 @@ const productPost = asyncHandler(async (req, res) => {
         productTipe: req.body.productTipe,
         sale: sale,
       });
-      res.status(201).json({ messsage: "Berhasil diinput", product: product });
+      res.status(200).json({ messsage: "Berhasil diinput", product: product });
     } catch (error) {
       res.status(400).send(error.message);
       throw new Error("Invalid user data");
@@ -152,7 +152,7 @@ const productDelete = asyncHandler(async (req, res) => {
       cloudDelete(hapus);
     });
     product = await Product.findByIdAndRemove(id);
-    res.json({ message: "Berhasil dihapus" });
+    res.status(200).json({ message: "Berhasil dihapus" });
   } catch (error) {
     res.status(400).send(err.message);
     throw new Error("Invalid user data");
@@ -176,6 +176,7 @@ const productGet = asyncHandler(async (req, res) => {
     throw new Error("Invalid credentials");
   }
 });
+
 
 // @desc    Get products
 // @route   GET /v2/products/

@@ -3,6 +3,7 @@ const User = require("../models/modelUsers");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
 
 // @desc    Post user data
 // @route   POST /v2/users/register
@@ -12,7 +13,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
 
   if (!firstname || !lastname|| !email || !password) {
-    res.status(400);
+    res.status(422);
     throw new Error("Please add all fields");
   }
 
@@ -20,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
+    res.status(422);
     throw new Error("Email sudah ada");
   }
 
@@ -37,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201).json({
+    res.status(200).json({
       message: "Register Success",
       user: {
         _id: user.id,
@@ -54,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    Authenticate a user
-// @route   POST /api/users/login
+// @route   POST /v2/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -63,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
+    res.status(200).json({
       message: "Login Success",
       user: user,
     });
@@ -177,7 +178,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     let user = await User.findById(id);
 
     await user.remove();
-    res.json({
+    res.status(200).json({
       message: "User berhasil dihapus",
       user: user
     });
@@ -195,11 +196,12 @@ const getMe = asyncHandler(async (req, res) => {
   let user = await User.findById(id);
 
   if (user) {
-    res.json({
+    res.status(200).json({
       message: "Berhasil dipanggil",
       user: {
         _id: user.id,
-        name: user.name,
+        firstname: user.firstname,
+        lastname: user.lastname,
         email: user.email,
         token: generateToken(user._id),
       }
