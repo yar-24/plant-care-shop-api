@@ -9,6 +9,7 @@ router.post("/", protect, [
     body("title"),
     body("desc"),
     body("subTitle"),
+    body("category"),
     body("subDesc"),
     fileUploads.fields([
         {name: "image"},
@@ -20,6 +21,7 @@ router.put("/:id", protect, [
     body("title"),
     body("desc"),
     body("subTitle"),
+    body("category"),
     body("subDesc"),
     fileUploads.fields([
         {name: "image"},

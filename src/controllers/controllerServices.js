@@ -25,6 +25,7 @@ const servicePost = asyncHandler(async (req, res) => {
       const service = await Service.create({
         title: req.body.title,
         desc: req.body.desc,
+        category: req.body.category,
         idImage: image.public_id,
         subService: subService,
       });
@@ -69,6 +70,7 @@ const serviceUpdate = asyncHandler(async (req, res) => {
       const data = {
         title: req.body.title || service.title,
         desc: req.body.desc || service.desc,
+        category: req.body.category || service.category,
         idImage: image.public_id || service.idImage,
         subService: subService,
       };
