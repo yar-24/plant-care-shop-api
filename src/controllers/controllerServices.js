@@ -14,20 +14,20 @@ const servicePost = asyncHandler(async (req, res) => {
     try {
       const cloudUpload = await cloudinary.uploader.upload;
       const image = await cloudUpload(req.files["image"][0].path);
-      const subImage = await cloudUpload(req.files["subImage"][0].path);
+      // const subImage = await cloudUpload(req.files["subImage"][0].path);
 
-      const subService = {
-        subTitle: req.body.subTitle,
-        subDesc: req.body.subDesc,
-        subIdImage: subImage.public_id,
-      };
+      // const subService = {
+      //   subTitle: req.body.subTitle,
+      //   subDesc: req.body.subDesc,
+      //   // subIdImage: subImage.public_id,
+      // };
 
       const service = await Service.create({
         title: req.body.title,
         desc: req.body.desc,
         category: req.body.category,
         idImage: image.public_id,
-        subService: subService,
+        // subService: subService,
       });
       res.status(201).json({ messsage: "Berhasil diinput", service: service });
     } catch (error) {
@@ -54,25 +54,25 @@ const serviceUpdate = asyncHandler(async (req, res) => {
       //DELETE FILE
       const cloudDelete = await cloudinary.uploader.destroy;
       cloudDelete(service.idImage);
-      cloudDelete(service.subIdImage);
+      // cloudDelete(service.subIdImage);
 
       //POST FILE
       const cloudUpload = await cloudinary.uploader.upload;
       const image = await cloudUpload(req.files["image"][0].path);
-      const subImage = await cloudUpload(req.files["subImage"][0].path);
+      // const subImage = await cloudUpload(req.files["subImage"][0].path);
 
-      const subService = {
-        subTitle: req.body.subTitle || service.subTitle,
-        subDesc: req.body.subDesc || service.subDesc,
-        subIdImage: subImage.public_id || service.subIdImage,
-      };
+      // const subService = {
+      //   subTitle: req.body.subTitle || service.subTitle,
+      //   subDesc: req.body.subDesc || service.subDesc,
+      //   subIdImage: subImage.public_id || service.subIdImage,
+      // };
 
       const data = {
         title: req.body.title || service.title,
         desc: req.body.desc || service.desc,
         category: req.body.category || service.category,
         idImage: image.public_id || service.idImage,
-        subService: subService,
+        // subService: subService,
       };
 
       service = await Service.findByIdAndUpdate(id, data, { new: true });
@@ -95,7 +95,7 @@ const serviceDelete = asyncHandler(async (req, res) => {
   
       const cloudDelete = await cloudinary.uploader.destroy;
       cloudDelete(service.idImage);
-      cloudDelete(service.subIdImage);
+      // cloudDelete(service.subIdImage);
       service = await Service.findByIdAndRemove(id);
       res.json({ message: "Berhasil dihapus" });
     } catch (error) {

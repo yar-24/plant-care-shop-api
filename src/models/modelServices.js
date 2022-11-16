@@ -15,7 +15,7 @@ const serviceSchema = mongoose.Schema(
     categorie: {
       type: String
     },
-    subService:[Object]
+    // subService:[Object]
   },
   {
     timestamps: true,
