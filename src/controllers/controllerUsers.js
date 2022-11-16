@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (userExists) {
     res.status(422);
-    throw new Error("Email sudah ada");
+    throw new Error("Email already exists");
   }
 
   // Hash password
@@ -66,7 +66,12 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
       message: "Login Success",
-      user: user,
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      picProfile: user.picProfile,
+      token: generateToken(user._id),
+      isAdmin: user.isAdmin,
     });
   } else {
     res.status(400);
@@ -152,7 +157,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       html:
         "<p> hai " +
         name +
-        ', Please copy or click the <a href="https://eundang.herokuapp.com/resetPassword?token=' +
+        ', Please copy or click the <a href="http://localhost:3000/reset-password?token=' +
         token +
         '">link</a> and reset your password</p> ',
     };
@@ -160,7 +165,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       if (error) {
         console.log(error);
       } else {
-        console.log("Periksa email Anda", info.response);
+        console.log("Check your email", info.response);
       }
     });
   } catch (error) {
