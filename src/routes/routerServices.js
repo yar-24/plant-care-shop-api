@@ -8,25 +8,15 @@ const { servicePost, serviceUpdate, serviceDelete, serviceGet, serviceGets } = r
 router.post("/", protect, [
     body("title"),
     body("desc"),
-    body("subTitle"),
     body("category"),
-    body("subDesc"),
-    fileUploads.fields([
-        {name: "image"},
-        {name: "subImage"}
-    ])
+    fileUploads.single("image")
 ], servicePost)
 
 router.put("/:id", protect, [
     body("title"),
     body("desc"),
-    body("subTitle"),
     body("category"),
-    body("subDesc"),
-    fileUploads.fields([
-        {name: "image"},
-        {name: "subImage"}
-    ])
+    fileUploads.single("image")
 ], serviceUpdate)
 
 router.delete("/:id", protect, serviceDelete)

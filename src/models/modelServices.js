@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const serviceSchema = mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     title: {
       type: String,
       required: [true, "Please add a Title"],
@@ -12,10 +17,9 @@ const serviceSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add an description"],
     },
-    categorie: {
+    category: {
       type: String
     },
-    // subService:[Object]
   },
   {
     timestamps: true,

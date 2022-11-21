@@ -6,28 +6,21 @@ const Service = require("../models/modelServices");
 // @route   POST /v2/services
 // @access  Private
 const servicePost = asyncHandler(async (req, res) => {
-  if (!req.files) {
+  if (!req.file) {
     const err = new Error("Gambar harus diupload!!");
     err.errorStatus = 422;
     throw err;
   } else {
     try {
       const cloudUpload = await cloudinary.uploader.upload;
-      const image = await cloudUpload(req.files["image"][0].path);
-      // const subImage = await cloudUpload(req.files["subImage"][0].path);
-
-      // const subService = {
-      //   subTitle: req.body.subTitle,
-      //   subDesc: req.body.subDesc,
-      //   // subIdImage: subImage.public_id,
-      // };
+      const image = await cloudUpload(req.file.path);
 
       const service = await Service.create({
+        user: req.user.id,
         title: req.body.title,
         desc: req.body.desc,
         category: req.body.category,
         idImage: image.public_id,
-        // subService: subService,
       });
       res.status(201).json({ messsage: "Berhasil diinput", service: service });
     } catch (error) {
@@ -42,37 +35,22 @@ const servicePost = asyncHandler(async (req, res) => {
 // @access  Private
 const serviceUpdate = asyncHandler(async (req, res) => {
   const id = req.params.id;
-
-  if (!req.files) {
-    const err = new Error("Gambar harus diupload!!");
-    err.errorStatus = 422;
-    throw err;
-  } else {
     try {
       let service = await Service.findById(req.params.id);
 
       //DELETE FILE
       const cloudDelete = await cloudinary.uploader.destroy;
       cloudDelete(service.idImage);
-      // cloudDelete(service.subIdImage);
-
+    
       //POST FILE
       const cloudUpload = await cloudinary.uploader.upload;
-      const image = await cloudUpload(req.files["image"][0].path);
-      // const subImage = await cloudUpload(req.files["subImage"][0].path);
-
-      // const subService = {
-      //   subTitle: req.body.subTitle || service.subTitle,
-      //   subDesc: req.body.subDesc || service.subDesc,
-      //   subIdImage: subImage.public_id || service.subIdImage,
-      // };
+        const image = await cloudUpload(req.file.path);
 
       const data = {
         title: req.body.title || service.title,
         desc: req.body.desc || service.desc,
         category: req.body.category || service.category,
         idImage: image.public_id || service.idImage,
-        // subService: subService,
       };
 
       service = await Service.findByIdAndUpdate(id, data, { new: true });
@@ -81,7 +59,6 @@ const serviceUpdate = asyncHandler(async (req, res) => {
       res.status(400).send(err.message);
       throw new Error("Invalid user data");
     }
-  }
 });
 
 // @desc    Delete Service
@@ -95,7 +72,7 @@ const serviceDelete = asyncHandler(async (req, res) => {
   
       const cloudDelete = await cloudinary.uploader.destroy;
       cloudDelete(service.idImage);
-      // cloudDelete(service.subIdImage);
+
       service = await Service.findByIdAndRemove(id);
       res.json({ message: "Berhasil dihapus" });
     } catch (error) {
@@ -136,4 +113,6 @@ const serviceGets = asyncHandler(async (req, res) => {
       throw new Error("Invalid credentials");
     }
   });
+
+
 module.exports = { servicePost, serviceUpdate, serviceDelete, serviceGet, serviceGets };
