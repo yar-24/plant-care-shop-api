@@ -42,7 +42,6 @@ const productPost = asyncHandler(async (req, res) => {
         care: req.body.care,
         price: req.body.price,
         plantAbout: req.body.plantAbout,
-        // imageProduct: imageProduct.secure_url,
         idImageProduct: imageProduct.public_id,
         images: imagesArray,
         plantHeight: plantHeight,

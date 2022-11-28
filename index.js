@@ -11,6 +11,7 @@ const { errorHandler } = require("./src/middleware/errorMiddleware");
 const routerUsers = require("./src/routes/routerUsers")
 const routerPreducts = require("./src/routes/routerProducts")
 const routerServices = require("./src/routes/routerServices")
+const routerCarts = require('./src/routes/routerCart')
 
 const options = {
   definition: {
@@ -21,7 +22,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/'
+        url: 'https://plant-care-shop-api.herokuapp.com/'
       }
     ]
   },
@@ -47,6 +48,7 @@ mongoose
   app.use("/v2/users", routerUsers)
   app.use("/v2/products", routerPreducts)
   app.use("/v2/services", routerServices)
+  app.use("/v2/carts", routerCarts)
 
   app.listen(process.env.PORT || 5000, () => {
     console.log("Backend server is running!");

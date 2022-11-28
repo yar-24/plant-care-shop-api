@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    cart:[Object],
+    carts:[Object],
     address:{type: String},
     token:{
       type:String,

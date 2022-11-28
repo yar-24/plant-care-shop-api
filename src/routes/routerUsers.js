@@ -8,6 +8,7 @@ const {
   forgotPasswordUser,
   deleteUser,
   getMe,
+  updateUser
 } = require("../controllers/controllerUsers");
 
 router.post("/register", registerUser);
@@ -16,5 +17,6 @@ router.post("/resetPassword", resetPasswordUser);
 router.post("/forgotPassword", forgotPasswordUser);
 router.delete("/:id", protect, deleteUser);
 router.get("/:id", protect, getMe);
+router.put("/:id", protect, updateUser);
 
 module.exports = router;

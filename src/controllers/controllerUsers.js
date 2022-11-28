@@ -9,10 +9,9 @@ const randomstring = require("randomstring");
 // @route   POST /v2/users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-
   const { firstname, lastname, email, password } = req.body;
 
-  if (!firstname || !lastname|| !email || !password) {
+  if (!firstname || !lastname || !email || !password) {
     res.status(422);
     throw new Error("Please add all fields");
   }
@@ -110,21 +109,23 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
 // @route   POST /v2/users/resetPassword
 // @access  Public
 const resetPasswordUser = asyncHandler(async (req, res) => {
-  const {password} = req.body
+  const { password } = req.body;
   try {
     const token = req.query.token;
     const tokenData = await User.findOne({ token: token });
     if (tokenData) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-      const userData = await User.findByIdAndUpdate({_id:tokenData._id},{$set:{password: hashedPassword, token: ""}}, {new: true});
-      res
-        .status(200)
-        .send({
-          success: true,
-          message: "Password user telah direset",
-          data: userData,
-        });
+      const userData = await User.findByIdAndUpdate(
+        { _id: tokenData._id },
+        { $set: { password: hashedPassword, token: "" } },
+        { new: true }
+      );
+      res.status(200).send({
+        success: true,
+        message: "Password user telah direset",
+        data: userData,
+      });
     } else {
       res
         .status(200)
@@ -185,7 +186,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     await user.remove();
     res.status(200).json({
       message: "User berhasil dihapus",
-      user: user
+      user: user,
     });
   } catch (err) {
     res.status(400).send(err.message);
@@ -209,12 +210,52 @@ const getMe = asyncHandler(async (req, res) => {
         lastname: user.lastname,
         email: user.email,
         token: generateToken(user._id),
-      }
+        cart: user.cart,
+      },
     });
   } else {
     res.status(400);
     throw new Error("Invalid credentials");
   }
+});
+
+const updateUser = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then((post) => {
+      if (!post) {
+        const err = new Error("Undangan tidak ditemukan");
+        err.errorStatus = 404;
+        throw err;
+      }
+
+      const cart = {
+        namePlant: namePlant,
+        conditions: conditions,
+        care: care,
+        price: price,
+        plantAbout: plantAbout,
+        plantTipe: plantTipe,
+        plantEnvironment: plantEnvironment,
+        plantLight: plantLight,
+        plantBenefit: plantBenefit,
+        productTipe: productTipe,
+      };
+
+      post.carts.push(cart);
+
+      return post.save();
+    })
+    .then((data) => {
+      res.status(200).json({
+        message: "Comment Berhasil diUpload",
+        data: data,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 // Generate JWT
@@ -224,13 +265,12 @@ const generateToken = (id) => {
   });
 };
 
-
-
 module.exports = {
   registerUser,
   loginUser,
   resetPasswordUser,
   forgotPasswordUser,
   deleteUser,
-  getMe
+  getMe,
+  updateUser,
 };
