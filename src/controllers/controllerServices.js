@@ -102,21 +102,12 @@ const serviceGet = asyncHandler(async (req, res) => {
 // @desc    Get all Services
 // @route   GET /v2/services
 const serviceGets = asyncHandler(async (req, res) => {
-  const {q} = req.query;
-
-  const keys = ["title", "desc"];
   const services = await Service.find();
-
-  const search = (data) => {
-    return data.filter((item) => 
-      keys.some((key) => item[key].toLowerCase().includes(q))
-    )
-  }
 
     try {
       res.status(200).json({
         message: "Berhasil dipanggil",
-        services:  search(services),
+        services: services,
       });
     } catch (error) {
       res.status(400).send(err.message);

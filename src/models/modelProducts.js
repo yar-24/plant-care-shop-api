@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const toJson = require('@meanie/mongoose-to-json');
 
 const productSchema = mongoose.Schema(
   {
@@ -43,7 +42,5 @@ const productSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-productSchema.plugin(toJson);
 
 module.exports = mongoose.model("Product", productSchema);
