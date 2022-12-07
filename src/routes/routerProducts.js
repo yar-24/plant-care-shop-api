@@ -10,6 +10,7 @@ router.post(
   [
     body("namePlant"),
     body("conditions"),
+    body("plantSize"),
     body("care"),
     body("price"),
     body("plantAbout"),
@@ -18,13 +19,12 @@ router.post(
     body("plantLight"),
     body("plantBenefit"),
     body("productTipe"),
+    body("centimeters"),
+    body("plantLike"),
+    body("sale"),
     fileUploads.fields([
         {name: "imageProduct"},
         {name: "images"},
-        {name: "centimeters"},
-        {name: "titleLike"},
-        {name: "descLike"},
-        {name: "idProduct"}
     ])
   ],
   productPost
@@ -35,6 +35,7 @@ router.put(
   [
     body("namePlant"),
     body("conditions"),
+    body("plantSize"),
     body("care"),
     body("price"),
     body("plantAbout"),
@@ -43,13 +44,12 @@ router.put(
     body("plantLight"),
     body("plantBenefit"),
     body("productTipe"),
+    body("centimeters"),
+    body("plantLike"),
+    body("sale"),
     fileUploads.fields([
         {name: "imageProduct"},
         {name: "images"},
-        {name: "centimeters"},
-        {name: "titleLike"},
-        {name: "descLike"},
-        {name: "idProduct"}
     ])
   ],
   productUpdate

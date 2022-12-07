@@ -12,6 +12,10 @@ const productSchema = mongoose.Schema(
       required: [true, "Please add a name plant"],
     },
     plantHeight: [Object],
+    plantSize: {
+      type: String,
+      require: [true, "Please add a plant size"],
+    },
     conditions: {
       type: String,
       require: [true, "Please add a conditions"],
@@ -36,7 +40,7 @@ const productSchema = mongoose.Schema(
     plantLight: { type: String },
     plantBenefit: { type: String },
     productTipe: { type: String },
-    sale: [Object ],
+    sale: {type:String},
   },
   {
     timestamps: true,

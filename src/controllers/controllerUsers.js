@@ -66,7 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(200).json({
       message: "Login Success",
       _id: user.id,
-      name: user.name,
+      firstname: user.firstname,
       email: user.email,
       picProfile: user.picProfile,
       token: generateToken(user._id),
@@ -92,7 +92,7 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
         { email: email },
         { $set: { token: randomString } }
       );
-      sendResetPasswordMail(userData.name, userData.email, randomString);
+      sendResetPasswordMail(userData.firstname, userData.email, randomString);
       res.status(200).send({
         success: true,
         message: "Silahkan Cek email Anda",
@@ -138,7 +138,7 @@ const resetPasswordUser = asyncHandler(async (req, res) => {
 
 // @desc    Send email to user
 // @access  Private
-const sendResetPasswordMail = async (name, email, token) => {
+const sendResetPasswordMail = async (firstname, email, token) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -157,7 +157,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       subject: "For Reset Password",
       html:
         "<p> hai " +
-        name +
+        firstname +
         ', Please copy or click the <a href="https://plant-care-shop-api.herokuapp.com/v2/resetPassword?token=' +
         token +
         '">link</a> and reset your password</p> ',

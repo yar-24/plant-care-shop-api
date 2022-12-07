@@ -26,15 +26,6 @@ const productPost = asyncHandler(async (req, res) => {
         centimeters: req.body.centimeters,
       };
 
-      const plantLike = {
-        titleLike: req.body.titleLike,
-        descLike: req.body.descLike,
-      };
-
-      const sale = {
-        idProduct: req.body.idProduct,
-      };
-
       const product = await Product.create({
         user: req.user.id,
         namePlant: req.body.namePlant,
@@ -45,13 +36,14 @@ const productPost = asyncHandler(async (req, res) => {
         idImageProduct: imageProduct.public_id,
         images: imagesArray,
         plantHeight: plantHeight,
-        plantLike: plantLike,
+        plantLike: req.body.plantLike,
+        plantSize: req.body.plantSize,
         plantTipe: req.body.plantTipe,
         plantEnvironment: req.body.plantEnvironment,
         plantLight: req.body.plantLight,
         plantBenefit: req.body.plantBenefit,
         productTipe: req.body.productTipe,
-        sale: sale,
+        sale: req.body.sale,
       });
       res.status(200).json({ messsage: "Berhasil diinput", product: product });
     } catch (error) {
@@ -98,15 +90,6 @@ const productUpdate = asyncHandler(async (req, res) => {
         centimeters: req.body.centimeters,
       };
 
-      const plantLike = {
-        titleLike: req.body.titleLike,
-        descLike: req.body.descLike,
-      };
-
-      const sale = {
-        idProduct: req.body.idProduct,
-      };
-
       const data = {
         namePlant: req.body.namePlant || product.namePlant,
         conditions: req.body.conditions || product.conditions,
@@ -117,13 +100,14 @@ const productUpdate = asyncHandler(async (req, res) => {
         idImageProduct: imageProduct.public_id || product.idImageProduct,
         images: imagesArray || product.images,
         plantHeight: plantHeight || product.plantHeight,
-        plantLike: plantLike || product.plantLike,
+        plantLike: req.body.plantLike || product.plantLike,
         plantTipe: req.body.plantTipe || product.plantTipe,
+        plantSize: req.body.plantSize || product.plantSize,
         plantEnvironment: req.body.plantEnvironment || product.plantEnvironment,
         plantLight: req.body.plantLight || product.plantLight,
         plantBenefit: req.body.plantBenefit || product.plantBenefit,
         productTipe: req.body.productTipe || product.productTipe,
-        sale: sale || product.sale,
+        sale: req.body.sale || product.sale,
       };
 
       product = await Product.findByIdAndUpdate(id, data, { new: true });
