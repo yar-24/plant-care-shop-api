@@ -158,7 +158,7 @@ const sendResetPasswordMail = async (firstname, email, token) => {
       html:
         "<p> hai " +
         firstname +
-        ', Please copy or click the <a href="https://plant-care-shop-api.herokuapp.com/v2/resetPassword?token=' +
+        ', Please copy or click the <a href="http://plant-care-shop.vercel.app/v2/resetPassword?token=' +
         token +
         '">link</a> and reset your password</p> ',
     };
